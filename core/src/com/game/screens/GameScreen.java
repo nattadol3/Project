@@ -12,6 +12,7 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.game.characters.Chalie;
 import com.game.characters.Player;
 import com.game.characters.Player.State;
 import com.game.project.project;
@@ -39,6 +40,9 @@ public class GameScreen implements Screen {
 	// Player
 	private Player player;
 	
+	// Chalie
+	private Chalie ch1;
+	
 	// Boundaries check
 	private float boundX, boundY;
 	
@@ -58,7 +62,7 @@ public class GameScreen implements Screen {
 		// Add it to the renderer
 		//renderer = new OrthogonalTiledMapRenderer(map);
 		
-		player = new Player(100, 128, new Texture("Player Sprite/Back Movement.png"), new Texture("Player Sprite/Front Movement.png"), 
+		player = new Player(100, 128, 25, new Texture("Player Sprite/Back Movement.png"), new Texture("Player Sprite/Front Movement.png"), 
 						new Texture("Player Sprite/Side Movement Left.png"), new Texture("Player Sprite/Side Movement Right.png"), 
 						new Texture("Player Sprite/Back ConsecutiveSlash.png"), new Texture("Player Sprite/Front ConsecutiveSlash.png"), 
 						new Texture("Player Sprite/Left ConsecutiveSlash.png"), new Texture("Player Sprite/Right ConsecutiveSlash.png"));
@@ -72,6 +76,15 @@ public class GameScreen implements Screen {
 		camera.position.set(player.getX() + player.getWidth() / 2, player.getY() + player.getHeight() / 2, 0);	
 		
 		player.setCurrentState(State.IDLE_DOWN);
+		
+		ch1 = new Chalie(250, 50, 24, new Texture("Chalie/charlieTheCapybaraAnimationSheet Right.png"), 
+					new Texture("Chalie/charlieTheCapybaraAnimationSheet Left.png"));
+		
+		ch1.setSize(32f, 32f);
+		
+		ch1.setBounds(ch1.getX(), ch1.getY(), 32f, 32f);
+		
+		ch1.setPosition(WORLD_WIDTH / 2, WORLD_HEIGHT / 2);
 	}
 	
 	@Override
@@ -105,6 +118,8 @@ public class GameScreen implements Screen {
 									
 		
 		project.batch.begin();		
+		ch1.update(delta);
+		ch1.draw();
 		player.update(delta);
 		player.draw();
 		project.batch.setProjectionMatrix(camera.combined);

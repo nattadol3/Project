@@ -1,11 +1,7 @@
 package com.game.project;
 
-import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.utils.ScreenUtils;
-import com.game.screens.GameScreen;
 import com.game.screens.MainMenu;
 
 public class project extends Game {

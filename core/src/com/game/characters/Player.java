@@ -1,7 +1,5 @@
 package com.game.characters;
 
-import java.net.SecureCacheResponse;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Texture;
@@ -12,9 +10,7 @@ import com.game.project.project;
 
 public class Player extends Sprite{
 	// HP, movement speed value
-	private float hp, speed;
-	
-	private float atkAniTime;
+	private float hp, speed, damage;
 		
 	// Character sprite sheet
 	private TextureRegion[] walkUp, walkDown, walkLeft, walkRight,
@@ -53,11 +49,12 @@ public class Player extends Sprite{
 	// Boolean
 	private boolean isMoving, isAttacking;
 
-	public Player(float hp, float speed, Texture walkUpTexture, Texture walkDownTexture, 
+	public Player(float hp, float speed, float damage, Texture walkUpTexture, Texture walkDownTexture, 
 			Texture walkLeftTexture, Texture walkRightTexture, Texture attackUpTexture,
 			Texture attackDownTexture, Texture attackRightTexture, Texture attackLeftTexture) {
 		this.hp = hp;
 		this.speed = speed;
+		this.damage = damage;
 		
 		tmpFrame = TextureRegion.split(walkUpTexture, 64, 64);
 		
@@ -285,7 +282,6 @@ public class Player extends Sprite{
 	public void draw() {
 		isMoving = false;
 		isAttacking = false;
-		atkAniTime = 0.5f;
 		
 		if (Gdx.input.isKeyPressed(Keys.RIGHT)) {
 		    if (Gdx.input.isKeyPressed(Keys.UP)) {
@@ -522,4 +518,3 @@ public class Player extends Sprite{
 		this.currentState = currentState;
 	}
 }
-
