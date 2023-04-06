@@ -5,17 +5,20 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.game.screens.GameScreen;
 import com.game.screens.MainMenu;
 
 public class project extends Game {
 	public static SpriteBatch batch;
 	protected MainMenu mainMenu;
+	GameScreen gameScreen;
 	
 	@Override
 	public void create() {
 		batch = new SpriteBatch();
 		mainMenu = new MainMenu(this);
-		setScreen(mainMenu);
+		gameScreen = new GameScreen(this);
+		setScreen(gameScreen);
 	}
 
 	@Override
