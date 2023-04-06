@@ -51,17 +51,17 @@ public class GameScreen implements Screen {
 		viewport = new ExtendViewport(VIEWPORT_WIDTH * aspectRatio, VIEWPORT_HEIGHT, camera);
 		
 		// Load map
-		//TmxMapLoader loader = new TmxMapLoader();
+		TmxMapLoader loader = new TmxMapLoader();
 						
-		//map = loader.load("Demo map.tmx");
+		map = loader.load("Map/testmap01.tmx");
 						
 		// Add it to the renderer
-		//renderer = new OrthogonalTiledMapRenderer(map);
+		renderer = new OrthogonalTiledMapRenderer(map);
 		
 		player = new Player(100, 128, new Texture("Player Sprite/Back Movement.png"), new Texture("Player Sprite/Front Movement.png"), 
 						new Texture("Player Sprite/Side Movement Left.png"), new Texture("Player Sprite/Side Movement Right.png"), 
 						new Texture("Player Sprite/Back ConsecutiveSlash.png"), new Texture("Player Sprite/Front ConsecutiveSlash.png"), 
-						new Texture("Player Sprite/Side ConsecutiveSlash.png"), new Texture("Player Sprite/Side ConsecutiveSlash.png"));
+						new Texture("Player Sprite/Right ConsecutiveSlash.png"), new Texture("Player Sprite/Left ConsecutiveSlash.png"));
 		
 		player.setSize(64f, 64f);
 		
@@ -89,8 +89,8 @@ public class GameScreen implements Screen {
 		camera.update();
 								
 		// Render the map
-		//renderer.setView(camera);
-		//renderer.render();
+		renderer.setView(camera);
+		renderer.render();
 		
 				
 		boundX = MathUtils.clamp(player.getX(), player.getWidth() / 2, WORLD_WIDTH  - player.getWidth());

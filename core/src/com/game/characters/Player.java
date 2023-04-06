@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.game.project.project;
@@ -16,12 +15,18 @@ public class Player extends Sprite{
 	// Character sprite sheet
 	private TextureRegion[] walkUp, walkDown, walkLeft, walkRight,
 						idleRight, idleLeft, idleUp, idleDown, 
-						attackUp, attackDown, attackLeft, attackRight;
+						attackUp1, attackUp2, attackUp3, 
+						attackDown1, attackDown2, attackDown3, 
+						attackLeft1, attackLeft2, attackLeft3, 
+						attackRight1, attackRight2, attackRight3;
 	
 	// Character animation
 	private Animation<TextureRegion> walkUpAni, walkDownAni, walkLeftAni, walkRightAni,
 								idleUpAni, idleDownAni, idleLeftAni, idleRightAni,
-								attackUpAni, attackDownAni, attackLeftAni, attackRightAni;
+								attackUpAni1, attackUpAni2, attackUpAni3, 
+								attackDownAni1, attackDownAni2, attackDownAni3, 
+								attackLeftAni1, attackLeftAni2, attackLeftAni3, 
+								attackRightAni1, attackRightAni2, attackRightAni3;
 		
 	//
 	private float elapsedTime;
@@ -35,10 +40,14 @@ public class Player extends Sprite{
 		WALK_UP, WALK_LEFT, WALK_RIGHT, WALK_DOWN, 
 		WALK_LEFT_DOWN, WALK_RIGHT_DOWN,
 		WALK_LEFT_UP, WALK_RIGHT_UP,
+		ATTACK_UP, ATTACK_DOWN, ATTACK_LEFT, ATTACK_RIGHT
 	}
 		
 	// Current character state
 	private State currentState;
+	
+	// Boolean
+	private boolean isMoving, isAttacking;
 
 	public Player(float hp, float speed, Texture walkUpTexture, Texture walkDownTexture, 
 			Texture walkLeftTexture, Texture walkRightTexture, Texture attackUpTexture,
@@ -119,6 +128,150 @@ public class Player extends Sprite{
 		walkRightAni = new Animation<TextureRegion>(1f / 6f, walkRight);
 		
 		index = 0;
+		
+		tmpFrame = TextureRegion.split(attackUpTexture, 64, 64);
+		
+		attackUp1 = new TextureRegion[6];
+		attackUp2 = new TextureRegion[9];
+		attackUp3 = new TextureRegion[7];
+		
+		for (int i = 0; i < 1; i++) {
+			for (int j = 0; j < 6; j++) {
+				attackUp1[index++] = tmpFrame[0][j];
+			}
+		}
+		
+		attackUpAni1 = new Animation<TextureRegion>(1f / 6f, attackUp1);
+		
+		index = 0;
+		
+		for (int i = 0; i < 1; i++) {
+			for (int j = 0; j < 9; j++) {
+				attackUp2[index++] = tmpFrame[1][j];
+			}
+		}
+		
+		attackUpAni2 = new Animation<TextureRegion>(1f / 9f, attackUp2);
+		
+		index = 0;
+		
+		for (int i = 0; i < 1; i++) {
+			for (int j = 0; j < 7; j++) {
+				attackUp3[index++] = tmpFrame[2][j];
+			}
+		}
+		
+		attackUpAni3 = new Animation<TextureRegion>(1f / 7f, attackUp3);
+		
+		index = 0;
+		
+		tmpFrame = TextureRegion.split(attackDownTexture, 64, 64);
+		
+		attackDown1 = new TextureRegion[6];
+		attackDown2 = new TextureRegion[9];
+		attackDown3 = new TextureRegion[7];
+		
+		for (int i = 0; i < 1; i++) {
+			for (int j = 0; j < 6; j++) {
+				attackDown1[index++] = tmpFrame[0][j];
+			}
+		}
+		
+		attackDownAni1 = new Animation<TextureRegion>(1f / 6f, attackDown1);
+		
+		index = 0;
+		
+		for (int i = 0; i < 1; i++) {
+			for (int j = 0; j < 9; j++) {
+				attackDown2[index++] = tmpFrame[1][j];
+			}
+		}
+		
+		attackDownAni2 = new Animation<TextureRegion>(1f / 9f, attackDown2);
+		
+		index = 0;
+		
+		for (int i = 0; i < 1; i++) {
+			for (int j = 0; j < 7; j++) {
+				attackDown3[index++] = tmpFrame[2][j];
+			}
+		}
+		
+		attackDownAni3 = new Animation<TextureRegion>(1f / 7f, attackDown3);
+		
+		index = 0;
+		
+		tmpFrame = TextureRegion.split(attackLeftTexture, 64, 64);
+		
+		attackLeft1 = new TextureRegion[6];
+		attackLeft2 = new TextureRegion[9];
+		attackLeft3 = new TextureRegion[7];
+		
+		for (int i = 0; i < 1; i++) {
+			for (int j = 0; j < 6; j++) {
+				attackLeft1[index++] = tmpFrame[0][j];
+			}
+		}
+		
+		attackLeftAni1 = new Animation<TextureRegion>(1f / 6f, attackLeft1);
+		
+		index = 0;
+		
+		for (int i = 0; i < 1; i++) {
+			for (int j = 0; j < 9; j++) {
+				attackLeft2[index++] = tmpFrame[1][j];
+			}
+		}
+		
+		attackLeftAni2 = new Animation<TextureRegion>(1f / 9f, attackLeft2);
+		
+		index = 0;
+		
+		for (int i = 0; i < 1; i++) {
+			for (int j = 0; j < 7; j++) {
+				attackLeft3[index++] = tmpFrame[2][j];
+			}
+		}
+		
+		attackLeftAni3 = new Animation<TextureRegion>(1f / 7f, attackLeft3);
+		
+		index = 0;
+		
+		tmpFrame = TextureRegion.split(attackRightTexture, 64, 64);
+		
+		attackRight1 = new TextureRegion[6];
+		attackRight2 = new TextureRegion[9];
+		attackRight3 = new TextureRegion[7];
+		
+		for (int i = 0; i < 1; i++) {
+			for (int j = 0; j < 6; j++) {
+				attackRight1[index++] = tmpFrame[0][j];
+			}
+		}
+		
+		attackRightAni1 = new Animation<TextureRegion>(1f / 6f, attackRight1);
+		
+		index = 0;
+		
+		for (int i = 0; i < 1; i++) {
+			for (int j = 0; j < 9; j++) {
+				attackRight2[index++] = tmpFrame[1][j];
+			}
+		}
+		
+		attackRightAni2 = new Animation<TextureRegion>(1f / 9f, attackRight2);
+		
+		index = 0;
+		
+		for (int i = 0; i < 1; i++) {
+			for (int j = 0; j < 7; j++) {
+				attackRight3[index++] = tmpFrame[2][j];
+			}
+		}
+		
+		attackRightAni3 = new Animation<TextureRegion>(1f / 7f, attackRight3);
+		
+		index = 0;
 	}
 
 	public void update(float delta) {
@@ -126,7 +279,8 @@ public class Player extends Sprite{
 	}
 	
 	public void draw() {
-		boolean isMoving = false;
+		isMoving = false;
+		isAttacking = false;
 		
 		if (Gdx.input.isKeyPressed(Keys.RIGHT)) {
 		    if (Gdx.input.isKeyPressed(Keys.UP)) {
@@ -135,7 +289,7 @@ public class Player extends Sprite{
 		        currentState = State.WALK_RIGHT_DOWN;
 		    } else {
 		        currentState = State.WALK_RIGHT;
-		    }
+		    }	    
 		    isMoving = true;
 		} else if (Gdx.input.isKeyPressed(Keys.LEFT)) {
 		    if (Gdx.input.isKeyPressed(Keys.UP)) {
@@ -150,42 +304,59 @@ public class Player extends Sprite{
 			currentState = State.WALK_DOWN;
 		    isMoving = true;
 		} else if (Gdx.input.isKeyPressed(Keys.UP)) {
-		        currentState = State.WALK_UP;
+		    currentState = State.WALK_UP;
 		    isMoving = true;
-		}
+		} 
 		else {
 		    isMoving = false;
-		    if (currentState == State.WALK_UP)
-		        currentState = State.IDLE_UP;
-		    else if (currentState == State.WALK_LEFT)
-		        currentState = State.IDLE_LEFT;
-		    else if (currentState == State.WALK_LEFT_UP)
-		        currentState = State.IDLE_LEFT;
-		    else if (currentState == State.WALK_LEFT_DOWN)
-		        currentState = State.IDLE_LEFT;
-		    else if (currentState == State.WALK_RIGHT)
-		        currentState = State.IDLE_RIGHT;
-		    else if (currentState == State.WALK_RIGHT_UP)
-		        currentState = State.IDLE_RIGHT;
-		    else if (currentState == State.WALK_RIGHT_DOWN)
-		        currentState = State.IDLE_RIGHT;
-		    else if (currentState == State.WALK_DOWN)
-		        currentState = State.IDLE_DOWN;
-		        
-		    if (currentState == State.IDLE_UP)
-		        idleUp();
-		    else if (currentState == State.IDLE_LEFT)
-		        idleLeft();
-		    else if (currentState == State.IDLE_RIGHT)
-		        idleRigt();
-		    else if (currentState == State.IDLE_DOWN)
-		        idleDown();
-
+		    if (currentState == State.WALK_UP) {		    	
+		    	currentState = State.IDLE_UP;
+		    }
+		    else if (currentState == State.WALK_LEFT) {		    	
+		    	currentState = State.IDLE_LEFT;
+		    }
+		    else if (currentState == State.WALK_LEFT_UP) {
+		    	currentState = State.IDLE_LEFT;
+		    }
+		    else if (currentState == State.WALK_LEFT_DOWN) {		    	
+		    	currentState = State.IDLE_LEFT;
+		    }
+		    else if (currentState == State.WALK_RIGHT) {		    	
+		    	currentState = State.IDLE_RIGHT;
+		    }
+		    else if (currentState == State.WALK_RIGHT_UP) {
+		    	currentState = State.IDLE_RIGHT;	
+		    }
+		    else if (currentState == State.WALK_RIGHT_DOWN) {
+		    	currentState = State.IDLE_RIGHT;
+		    }
+		    else if (currentState == State.WALK_DOWN) {
+		    	currentState = State.IDLE_DOWN;
+		    }	       
+		} 
+		
+		if (Gdx.input.isKeyJustPressed(Keys.A)) {
+			isAttacking = true;
+			if (currentState == State.WALK_UP || currentState == State.IDLE_UP) {
+				currentState = State.ATTACK_UP;
+			} else if(currentState == State.WALK_DOWN || currentState == State.IDLE_DOWN) {
+				currentState = State.ATTACK_DOWN;
+			} else if(currentState == State.WALK_RIGHT || currentState == State.WALK_RIGHT_UP || 
+					currentState == State.WALK_RIGHT_DOWN || currentState == State.IDLE_RIGHT) {
+				currentState = State.ATTACK_LEFT;
+			} else if (currentState == State.WALK_LEFT || currentState == State.WALK_LEFT_UP || 
+					currentState == State.WALK_LEFT_DOWN || currentState == State.IDLE_LEFT) {
+				currentState = State.ATTACK_RIGHT;
+			}
 		}
-	    
-	    if (isMoving) {
+		
+		if (isMoving && !isAttacking) {
 	        if (currentState == State.WALK_UP) {
-	            walkUp();
+	            if (currentState == State.ATTACK_UP) {
+	            	attackUp1();
+	            } else {
+	            	walkUp();
+	            }
 	        }
 	        else if (currentState == State.WALK_LEFT) {
 	            walkLeft();
@@ -208,8 +379,22 @@ public class Player extends Sprite{
 	        else if (currentState == State.WALK_DOWN) {
 	            walkDown();
 	        }
-	    }
+		} else if (!isMoving && !isAttacking) {
+			if (currentState == State.IDLE_UP)
+		        idleUp();
+		    else if (currentState == State.IDLE_LEFT)
+		        idleLeft();
+		    else if (currentState == State.IDLE_RIGHT)
+		        idleRigt();
+		    else if (currentState == State.IDLE_DOWN)
+		        idleDown();
+		} else if (isAttacking) {
+			if (currentState == State.ATTACK_UP) {
+				attackUp1();
+			}
+		}
 	}
+
 	
 	public void idleUp() {
 		project.batch.draw(idleUpAni.getKeyFrame(elapsedTime, true), getX(), getY());
@@ -265,6 +450,54 @@ public class Player extends Sprite{
 	public void walkDownLeft() {
 		project.batch.draw(walkLeftAni.getKeyFrame(elapsedTime, true), getX(), getY());
 		setPosition(getX() - speed * Gdx.graphics.getDeltaTime(), getY() - speed * Gdx.graphics.getDeltaTime());
+	}
+	
+	public void attackUp1() {
+		
+	}
+	
+	public void attackUp2() {
+		project.batch.draw(attackUpAni2.getKeyFrame(elapsedTime, true), getX(), getY());
+	}
+	
+	public void attackUp3() {
+		project.batch.draw(attackUpAni3.getKeyFrame(elapsedTime, true), getX(), getY());
+	}
+	
+	public void attackDown1() {
+		project.batch.draw(attackDownAni1.getKeyFrame(elapsedTime, true), getX(), getY());
+	}
+	
+	public void attackDown2() {
+		project.batch.draw(attackDownAni2.getKeyFrame(elapsedTime, true), getX(), getY());
+	}
+	
+	public void attackDown3() {
+		project.batch.draw(attackDownAni3.getKeyFrame(elapsedTime, true), getX(), getY());
+	}
+	
+	public void attackLeft1() {
+		project.batch.draw(attackLeftAni1.getKeyFrame(elapsedTime, true), getX(), getY());
+	}
+	
+	public void attackLeft2() {
+		project.batch.draw(attackLeftAni2.getKeyFrame(elapsedTime, true), getX(), getY());
+	}
+	
+	public void attackLeft3() {
+		project.batch.draw(attackLeftAni3.getKeyFrame(elapsedTime, true), getX(), getY());
+	}
+	
+	public void attackRight1() {
+		project.batch.draw(attackRightAni1.getKeyFrame(elapsedTime, true), getX(), getY());
+	}
+	
+	public void attackRight2() {
+		project.batch.draw(attackRightAni2.getKeyFrame(elapsedTime, true), getX(), getY());
+	}
+	
+	public void attackRight3() {
+		project.batch.draw(attackRightAni3.getKeyFrame(elapsedTime, true), getX(), getY());
 	}
 
 	public State getCurrentState() {
