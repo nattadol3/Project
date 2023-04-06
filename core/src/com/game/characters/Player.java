@@ -1,5 +1,7 @@
 package com.game.characters;
 
+import java.net.SecureCacheResponse;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Texture;
@@ -11,6 +13,8 @@ import com.game.project.project;
 public class Player extends Sprite{
 	// HP, movement speed value
 	private float hp, speed;
+	
+	private float atkAniTime;
 		
 	// Character sprite sheet
 	private TextureRegion[] walkUp, walkDown, walkLeft, walkRight,
@@ -141,7 +145,7 @@ public class Player extends Sprite{
 			}
 		}
 		
-		attackUpAni1 = new Animation<TextureRegion>(1f / 6f, attackUp1);
+		attackUpAni1 = new Animation<TextureRegion>(1f / 12f, attackUp1);
 		
 		index = 0;
 		
@@ -151,7 +155,7 @@ public class Player extends Sprite{
 			}
 		}
 		
-		attackUpAni2 = new Animation<TextureRegion>(1f / 9f, attackUp2);
+		attackUpAni2 = new Animation<TextureRegion>(1f / 13.5f, attackUp2);
 		
 		index = 0;
 		
@@ -161,7 +165,7 @@ public class Player extends Sprite{
 			}
 		}
 		
-		attackUpAni3 = new Animation<TextureRegion>(1f / 7f, attackUp3);
+		attackUpAni3 = new Animation<TextureRegion>(1f / 14f, attackUp3);
 		
 		index = 0;
 		
@@ -177,7 +181,7 @@ public class Player extends Sprite{
 			}
 		}
 		
-		attackDownAni1 = new Animation<TextureRegion>(1f / 6f, attackDown1);
+		attackDownAni1 = new Animation<TextureRegion>(1f / 12f, attackDown1);
 		
 		index = 0;
 		
@@ -187,7 +191,7 @@ public class Player extends Sprite{
 			}
 		}
 		
-		attackDownAni2 = new Animation<TextureRegion>(1f / 9f, attackDown2);
+		attackDownAni2 = new Animation<TextureRegion>(1f / 15f, attackDown2);
 		
 		index = 0;
 		
@@ -197,7 +201,7 @@ public class Player extends Sprite{
 			}
 		}
 		
-		attackDownAni3 = new Animation<TextureRegion>(1f / 7f, attackDown3);
+		attackDownAni3 = new Animation<TextureRegion>(1f / 14f, attackDown3);
 		
 		index = 0;
 		
@@ -213,7 +217,7 @@ public class Player extends Sprite{
 			}
 		}
 		
-		attackLeftAni1 = new Animation<TextureRegion>(1f / 6f, attackLeft1);
+		attackLeftAni1 = new Animation<TextureRegion>(1f / 12f, attackLeft1);
 		
 		index = 0;
 		
@@ -223,7 +227,7 @@ public class Player extends Sprite{
 			}
 		}
 		
-		attackLeftAni2 = new Animation<TextureRegion>(1f / 9f, attackLeft2);
+		attackLeftAni2 = new Animation<TextureRegion>(1f / 15f, attackLeft2);
 		
 		index = 0;
 		
@@ -233,7 +237,7 @@ public class Player extends Sprite{
 			}
 		}
 		
-		attackLeftAni3 = new Animation<TextureRegion>(1f / 7f, attackLeft3);
+		attackLeftAni3 = new Animation<TextureRegion>(1f / 14f, attackLeft3);
 		
 		index = 0;
 		
@@ -249,7 +253,7 @@ public class Player extends Sprite{
 			}
 		}
 		
-		attackRightAni1 = new Animation<TextureRegion>(1f / 6f, attackRight1);
+		attackRightAni1 = new Animation<TextureRegion>(1f / 12f, attackRight1);
 		
 		index = 0;
 		
@@ -259,7 +263,7 @@ public class Player extends Sprite{
 			}
 		}
 		
-		attackRightAni2 = new Animation<TextureRegion>(1f / 9f, attackRight2);
+		attackRightAni2 = new Animation<TextureRegion>(1f / 15f, attackRight2);
 		
 		index = 0;
 		
@@ -269,7 +273,7 @@ public class Player extends Sprite{
 			}
 		}
 		
-		attackRightAni3 = new Animation<TextureRegion>(1f / 7f, attackRight3);
+		attackRightAni3 = new Animation<TextureRegion>(1f / 14f, attackRight3);
 		
 		index = 0;
 	}
@@ -281,6 +285,7 @@ public class Player extends Sprite{
 	public void draw() {
 		isMoving = false;
 		isAttacking = false;
+		atkAniTime = 0.5f;
 		
 		if (Gdx.input.isKeyPressed(Keys.RIGHT)) {
 		    if (Gdx.input.isKeyPressed(Keys.UP)) {
@@ -306,13 +311,27 @@ public class Player extends Sprite{
 		} else if (Gdx.input.isKeyPressed(Keys.UP)) {
 		    currentState = State.WALK_UP;
 		    isMoving = true;
-		} 
-		else {
+		} else if (Gdx.input.isKeyPressed(Keys.A)) {
+			isAttacking = true;
+			if (currentState == State.WALK_UP || currentState == State.IDLE_UP) {
+				currentState = State.ATTACK_UP;
+			} else if(currentState == State.WALK_DOWN || currentState == State.IDLE_DOWN) {
+				currentState = State.ATTACK_DOWN;
+					
+			} else if(currentState == State.WALK_RIGHT || currentState == State.WALK_RIGHT_UP || 
+					currentState == State.WALK_RIGHT_DOWN || currentState == State.IDLE_RIGHT) {
+				currentState = State.ATTACK_LEFT;
+			} else if (currentState == State.WALK_LEFT || currentState == State.WALK_LEFT_UP || 
+					currentState == State.WALK_LEFT_DOWN || currentState == State.IDLE_LEFT) {
+				currentState = State.ATTACK_RIGHT;
+			} 
+		} else {
 		    isMoving = false;
-		    if (currentState == State.WALK_UP) {		    	
+		    isAttacking = false;
+		    if (currentState == State.WALK_UP || currentState == State.ATTACK_UP) {		    	
 		    	currentState = State.IDLE_UP;
 		    }
-		    else if (currentState == State.WALK_LEFT) {		    	
+		    else if (currentState == State.WALK_LEFT || currentState == State.ATTACK_LEFT) {		    	
 		    	currentState = State.IDLE_LEFT;
 		    }
 		    else if (currentState == State.WALK_LEFT_UP) {
@@ -321,7 +340,7 @@ public class Player extends Sprite{
 		    else if (currentState == State.WALK_LEFT_DOWN) {		    	
 		    	currentState = State.IDLE_LEFT;
 		    }
-		    else if (currentState == State.WALK_RIGHT) {		    	
+		    else if (currentState == State.WALK_RIGHT || currentState == State.ATTACK_RIGHT) {		    	
 		    	currentState = State.IDLE_RIGHT;
 		    }
 		    else if (currentState == State.WALK_RIGHT_UP) {
@@ -330,33 +349,17 @@ public class Player extends Sprite{
 		    else if (currentState == State.WALK_RIGHT_DOWN) {
 		    	currentState = State.IDLE_RIGHT;
 		    }
-		    else if (currentState == State.WALK_DOWN) {
+		    else if (currentState == State.WALK_DOWN || currentState == State.ATTACK_DOWN) {
 		    	currentState = State.IDLE_DOWN;
 		    }	       
 		} 
 		
-		if (Gdx.input.isKeyJustPressed(Keys.A)) {
-			isAttacking = true;
-			if (currentState == State.WALK_UP || currentState == State.IDLE_UP) {
-				currentState = State.ATTACK_UP;
-			} else if(currentState == State.WALK_DOWN || currentState == State.IDLE_DOWN) {
-				currentState = State.ATTACK_DOWN;
-			} else if(currentState == State.WALK_RIGHT || currentState == State.WALK_RIGHT_UP || 
-					currentState == State.WALK_RIGHT_DOWN || currentState == State.IDLE_RIGHT) {
-				currentState = State.ATTACK_LEFT;
-			} else if (currentState == State.WALK_LEFT || currentState == State.WALK_LEFT_UP || 
-					currentState == State.WALK_LEFT_DOWN || currentState == State.IDLE_LEFT) {
-				currentState = State.ATTACK_RIGHT;
-			}
-		}
+		
+		
 		
 		if (isMoving && !isAttacking) {
 	        if (currentState == State.WALK_UP) {
-	            if (currentState == State.ATTACK_UP) {
-	            	attackUp1();
-	            } else {
-	            	walkUp();
-	            }
+	            walkUp();
 	        }
 	        else if (currentState == State.WALK_LEFT) {
 	            walkLeft();
@@ -390,9 +393,23 @@ public class Player extends Sprite{
 		        idleDown();
 		} else if (isAttacking) {
 			if (currentState == State.ATTACK_UP) {
-				attackUp1();
+				attackUp2();
+				setBounds(getX(), getY(), 100, 100);
+			} else if (currentState == State.ATTACK_LEFT) {
+				attackLeft2();
+				setBounds(getX(), getY(), 100, 100);
+			} else if (currentState == State.ATTACK_RIGHT) {
+				attackRight2();
+				setBounds(getX(), getY(), 100, 100);
+			} else if (currentState == State.ATTACK_DOWN) {
+				attackDown2();
+				setBounds(getX(), getY(), 100, 100);
 			}
 		}
+		
+		//ystem.out.println(currentState);
+		System.out.println(isAttacking);
+		System.out.println(currentState);
 	}
 
 	
@@ -453,7 +470,8 @@ public class Player extends Sprite{
 	}
 	
 	public void attackUp1() {
-		
+		project.batch.draw(attackUpAni1.getKeyFrame(elapsedTime, true), getX(), getY());
+
 	}
 	
 	public void attackUp2() {
