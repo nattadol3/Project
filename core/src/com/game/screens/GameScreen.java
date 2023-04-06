@@ -87,8 +87,6 @@ public class GameScreen implements Screen {
 						new Texture("Player Sprite/Back ConsecutiveSlash.png"), new Texture("Player Sprite/Front ConsecutiveSlash.png"), 
 						new Texture("Player Sprite/Left ConsecutiveSlash.png"), new Texture("Player Sprite/Right ConsecutiveSlash.png"));
 		
-		player.setSize(128f, 128f);
-		
 		player.setPosition(WORLD_WIDTH / 2, WORLD_HEIGHT / 2);
 			
 		camera.position.set(player.getX() + player.getWidth() / 2, player.getY() + player.getHeight() / 2, 0);	
@@ -99,8 +97,6 @@ public class GameScreen implements Screen {
 					new Texture("Chalie/charlieTheCapybaraAnimationSheet Left.png"));
 		
 		ch1.setSize(32f, 32f);
-		
-		
 		
 		ch1.setPosition(WORLD_WIDTH / 2, WORLD_HEIGHT / 2);
 	}
@@ -162,22 +158,22 @@ public class GameScreen implements Screen {
 			if (player.currentState == State.WALK_UP) {
 				if (player.getY() < ch1.getY()) {
 			        // The player is above ch1, so move the player down
-			        player.setY(ch1.getY() - ch1.getHeight() - 0.1f);
+			        player.setY(ch1.getY() - ch1.getHeight());
 				}
 			} else if (player.currentState == State.WALK_LEFT || player.currentState == State.WALK_LEFT_UP || player.currentState == State.WALK_LEFT_UP) {
 				if (player.getX() > ch1.getX()) {
 			        // The player is above ch1, so move the player down
-			        player.setX(ch1.getX() + ch1.getWidth() + 0.1f);
+			        player.setX(ch1.getX() + ch1.getWidth());
 				}
 			} else if (player.currentState == State.WALK_RIGHT || player.currentState == State.WALK_RIGHT_UP || player.currentState == State.WALK_RIGHT_UP) {
 				if (player.getX() < ch1.getX()) {
 			        // The player is above ch1, so move the player down
-					player.setX(ch1.getX() - ch1.getWidth() - 0.1f);
+					player.setX(ch1.getX() - ch1.getWidth());
 				}
 			} else if (player.currentState == State.WALK_DOWN) {
 				if (player.getY() > ch1.getY()) {
 			        // The player is above ch1, so move the player down
-					player.setY(ch1.getY() + ch1.getHeight() + 0.1f);
+					player.setY(ch1.getY() + ch1.getHeight());
 				}
 			}
 		}
