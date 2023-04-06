@@ -1,5 +1,7 @@
 package com.game.characters;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -13,6 +15,10 @@ public class Chalie extends Sprite{
 	
 	private float animationTime = 0f;
 	private final float timePerAnimation = 6f;
+	
+	private float atkTime = 6f;
+	
+	private Sound attacking, getHit;
 	
 	private int currentAnimationIndex;
 	
@@ -46,6 +52,10 @@ public class Chalie extends Sprite{
 		this.damage = damage;
 		this.speed = speed;
 		
+		attacking = Gdx.audio.newSound(Gdx.files.internal("SFX/20_orc_special_atk.wav"));
+		
+		getHit = Gdx.audio.newSound(Gdx.files.internal("SFX/21_orc_damage_1.wav"));
+
 		tmpFrame = TextureRegion.split(chalieLeft, 64, 64);
 		
 		//
@@ -291,6 +301,7 @@ public class Chalie extends Sprite{
 	
 	public void update(float delta) {
 		elaspedTime += delta;
+		atkTime += delta;
         
         if (elaspedTime > timePerAnimation) {
             elaspedTime = 0f;
@@ -301,18 +312,32 @@ public class Chalie extends Sprite{
 	
 	public void draw() {
 		isMunching = false;
+		currentAnimation = munchgrassAni1;
 		currentFrame = currentAnimation.getKeyFrame(elaspedTime);
+		
 			
 		if (currentAnimation == munchgrassAni1) {
 			isMunching = true;
+			if (atkTime > timePerAnimation) {
+				atkTime = -6f;
+				attacking.play(0.2f);
+			} else {
+				atkTime += Gdx.graphics.getDeltaTime();
+			}
 		}
 		project.batch.draw(currentFrame, getX(), getY());
-		
-		System.out.println(isMunching);
+	}
+	
+	public void getHit(float damage) {
+		hp -= damage;
 	}
 
 	public float getDamage() {
 		return damage;
+	}
+	
+	public void died() {
+		setPosition(2000, 2000);
 	}
 
 	public void setDamage(float damage) {

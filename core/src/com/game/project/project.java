@@ -6,7 +6,7 @@ import com.game.screens.MainMenu;
 
 public class project extends Game {
 	public static SpriteBatch batch;
-	protected MainMenu mainMenu;
+	public static MainMenu mainMenu;
 	
 	@Override
 	public void create() {
