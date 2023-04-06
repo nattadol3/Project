@@ -11,14 +11,12 @@ import com.game.screens.MainMenu;
 public class project extends Game {
 	public static SpriteBatch batch;
 	protected MainMenu mainMenu;
-	GameScreen gameScreen;
 	
 	@Override
 	public void create() {
 		batch = new SpriteBatch();
 		mainMenu = new MainMenu(this);
-		gameScreen = new GameScreen(this);
-		setScreen(gameScreen);
+		setScreen(mainMenu);
 	}
 
 	@Override

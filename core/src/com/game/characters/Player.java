@@ -406,10 +406,6 @@ public class Player extends Sprite{
 				setBounds(getX(), getY(), 100, 100);
 			}
 		}
-		
-		//ystem.out.println(currentState);
-		System.out.println(isAttacking);
-		System.out.println(currentState);
 	}
 
 	
