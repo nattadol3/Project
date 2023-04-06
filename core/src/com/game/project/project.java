@@ -1,31 +1,32 @@
 package com.game.project;
 
 import com.badlogic.gdx.ApplicationAdapter;
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.game.screens.MainMenu;
 
-public class project extends ApplicationAdapter {
-	SpriteBatch batch;
-	Texture img;
+public class project extends Game {
+	public static SpriteBatch batch;
+	protected MainMenu mainMenu;
 	
 	@Override
-	public void create () {
+	public void create() {
 		batch = new SpriteBatch();
-		img = new Texture("badlogic.jpg");
+		mainMenu = new MainMenu(this);
+		setScreen(mainMenu);
 	}
 
 	@Override
-	public void render () {
-		ScreenUtils.clear(1, 0, 0, 1);
-		batch.begin();
-		batch.draw(img, 0, 0);
-		batch.end();
+	public void dispose() {
+		mainMenu.dispose();
+	}
+
+	@Override
+	public void resize(int width, int height) {
+		mainMenu.resize(width, height);
 	}
 	
-	@Override
-	public void dispose () {
-		batch.dispose();
-		img.dispose();
-	}
+	
 }
