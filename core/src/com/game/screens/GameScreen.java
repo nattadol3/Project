@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
@@ -31,7 +32,7 @@ public class GameScreen implements Screen {
 	
 	// World limit
 	private final float WORLD_WIDTH = 480f;
-	private final float WORLD_HEIGHT = 480f;
+	private final float WORLD_HEIGHT = 640f;
 			
 	// viewport limit
 	private final float VIEWPORT_WIDTH = 240f;
@@ -75,12 +76,12 @@ public class GameScreen implements Screen {
 		viewport = new ExtendViewport(VIEWPORT_WIDTH * aspectRatio, VIEWPORT_HEIGHT, camera);
 		
 		// Load map
-		//TmxMapLoader loader = new TmxMapLoader();
+		TmxMapLoader loader = new TmxMapLoader();
 						
-	//	map = loader.load("Map/testmap01.tmx");
+		map = loader.load("Demomap.tmx");
 						
 		// Add it to the renderer
-		//renderer = new OrthogonalTiledMapRenderer(map);
+		renderer = new OrthogonalTiledMapRenderer(map);
 		
 		player = new Player(100, 128, 25, new Texture("Player Sprite/Back Movement.png"), new Texture("Player Sprite/Front Movement.png"), 
 						new Texture("Player Sprite/Side Movement Left.png"), new Texture("Player Sprite/Side Movement Right.png"), 
@@ -98,7 +99,7 @@ public class GameScreen implements Screen {
 		
 		ch1.setSize(32f, 32f);
 		
-		ch1.setPosition(WORLD_WIDTH / 2, WORLD_HEIGHT / 2);
+		ch1.setPosition(210f, 500f);
 	}
 	
 	@Override
@@ -116,8 +117,8 @@ public class GameScreen implements Screen {
 		camera.update();
 								
 		// Render the map
-		//	renderer.setView(camera);
-		//renderer.render();
+		renderer.setView(camera);
+		renderer.render();
 		
 		if (player.isAttacking) {
 		    player.setBounds(player.getX(), player.getY(), 40f, 40f); // set the size to 64x64 when attacking
@@ -141,7 +142,6 @@ public class GameScreen implements Screen {
 		camera.position.x = MathUtils.clamp(camera.position.x, camera.viewportWidth / 2, WORLD_WIDTH - camera.viewportWidth / 2);
 		camera.position.y = MathUtils.clamp(camera.position.y, camera.viewportHeight / 2, WORLD_HEIGHT - camera.viewportHeight / 2);
 		
-		System.out.println(player.getHp());
 		project.batch.begin();	
 		 if (ch1Rect.overlaps(playerRect) && ch1.isMunching) {
 			player.getHit(ch1.getDamage());

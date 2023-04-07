@@ -312,7 +312,6 @@ public class Chalie extends Sprite{
 	
 	public void draw() {
 		isMunching = false;
-		currentAnimation = munchgrassAni1;
 		currentFrame = currentAnimation.getKeyFrame(elaspedTime);
 		
 			
