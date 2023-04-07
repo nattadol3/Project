@@ -153,7 +153,7 @@ public class GameScreen implements Screen {
 		 if (ch1Rect.overlaps(playerRect) && ch1.isMunching) {
 			player.getHit(ch1.getDamage());
 			if (player.getHp() <= 0) {
-				game3.setScreen(project.mainMenu);
+				game3.setScreen(new GameOverScreen(game3));
 			}
 		} else if (ch1Rect.overlaps(playerRect) && player.isAttacking && !ch1.isMunching) {
 			ch1.getHit(player.getDamage());
