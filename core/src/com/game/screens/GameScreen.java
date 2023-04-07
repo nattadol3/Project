@@ -7,6 +7,7 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
@@ -61,9 +62,15 @@ public class GameScreen implements Screen {
 	//
 	private Rectangle ch1Rect, playerRect;
 	
+	//
+	private BitmapFont gamefont;
+	
 	public GameScreen(Game game) {
 		//
 		game3 = game;
+		
+		//
+		gamefont = new BitmapFont(Gdx.files.internal("mega.fnt"),Gdx.files.internal("mega.png"),false);
 		
 		//
 		chalieDeath = Gdx.audio.newSound(Gdx.files.internal("SFX/24_orc_death_spin.wav"));
@@ -182,8 +189,14 @@ public class GameScreen implements Screen {
 		ch1.draw();
 		player.update(delta);
 		player.draw();
+		DrawUI();
 		project.batch.setProjectionMatrix(camera.combined);
 		project.batch.end();
+	}
+	
+	public void DrawUI() {
+		gamefont.draw(project.batch,"HealtPoint:"+player.getHp(),camera.position.x-150,camera.position.y+115);
+		
 	}
 
 	@Override
